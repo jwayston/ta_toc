@@ -1,0 +1,28 @@
+{
+  "appVersion" : "1.8.0",
+  "authors" : [
+    {
+      "name" : "JW"
+    }
+  ],
+  "dependencies" : [
+
+  ],
+  "description" : "This plugin takes in a text selection and formats the given input to look like a nice TOC.\n\nFeatures\/limitations:\n  - Asks user for the initial indentation level\n  - When word wrapping occurs, the subsequent lines are indented by 2 characters more than initial indentation level\n  - Width of text, subsequent indent length and word wrap threshold are hard coded\n\nExample in:\n\n```\nSome text [[202512180127]]\nSo long text that it forces to trigger word wrapping functionality [[202512192310]]\n```\n\nExample out (using initial indent of 2):\n\n```\n  Some text ................................................... [[202512180127]]\n  So long text that it forces to trigger word wrapping\n    functionality ............................................. [[202512192310]]\n```",
+  "identifier" : "com.idonthavedomain.toc",
+  "input" : {
+    "notes" : [
+
+    ],
+    "pasteboard" : false,
+    "text" : [
+      "selected"
+    ]
+  },
+  "output" : {
+    "insertText" : true
+  },
+  "releaseDate" : "2025-12-20",
+  "title" : "TOC",
+  "version" : "0.0.1"
+}
