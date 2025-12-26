@@ -22,7 +22,7 @@ const INDENT = userPrompt;
 const INDENT_SUB = INDENT + 2;
 
 const lineRegexp = /^(.+)(\[\[.+\]\])/;
-const selection = input.text.selected;
+const selection = input.text.selected.normalize("NFC");
 
 /* Word wrap snippet
 URL: https://github.com/Chalarangelo/30-seconds-of-code/blob/master/content/snippets/js/s/word-wrap.md
