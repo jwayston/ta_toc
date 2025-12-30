@@ -17,7 +17,7 @@ if (!Number.isInteger(userPrompt))
 // Settings
 const LINEBR = "\n";
 const COLS = 80;
-const LINK_MAXLEN = 20;
+const LINK_MAXLEN = 16;
 const INDENT = userPrompt;
 const INDENT_SUB = INDENT + 2;
 
