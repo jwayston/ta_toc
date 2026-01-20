@@ -26,4 +26,4 @@ Example out (using initial indent of 2):
 
 ## Credits
 
-A crucial part of the word wrapping functionality of the plugin comes from the regexp snippet borrowed from "30 seconds of code" maintained by Angelos Chalaris. The snippet is licensed under CC-BY-4.0.
+A crucial part of the word wrapping functionality of the plugin comes from the regexp snippet borrowed from ["30 seconds of code"](https://github.com/Chalarangelo/30-seconds-of-code/blob/master/content/snippets/js/s/word-wrap.md) maintained by Angelos Chalaris. The snippet is licensed under CC-BY-4.0.
