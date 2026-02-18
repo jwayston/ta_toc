@@ -1,4 +1,4 @@
-# TOC
+# Table of Contents prettifier for [The Archive](https://zettelkasten.de/the-archive/)
 
 This plugin takes in a text selection and formats the given input to look like a nice TOC.
 
