@@ -21,7 +21,7 @@ const LINK_MAXLEN = 16;
 const INDENT = userPrompt;
 const INDENT_SUB = INDENT + 2;
 
-const lineRegexp = /^(.+)(\[\[.+\]\])/;
+const lineRegexp = /^(.+)(\[\[.+\]\]|(?<=\s)\w*$)/;
 const selection = input.text.selected.normalize("NFC");
 
 /* Word wrap snippet
