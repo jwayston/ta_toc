@@ -5,9 +5,8 @@ This plugin takes in a text selection and formats the given input to look like a
 Features/limitations:
   - Asks user for the initial indentation level
   - When word wrapping occurs, the subsequent lines are indented by 2 characters more than initial indentation level
-  - Width of text (80 characters), subsequent indent length (2) and word wrap threshold are hard coded
-  - Links longer than 16 characters (including brackets) are not supported and
-    may break the behaviour
+  - If the line doesn't end with a link, treat the last word as one
+  - Width of text (80 characters) and subsequent indent length (2 characters) are hard coded
 
 Example in:
 
