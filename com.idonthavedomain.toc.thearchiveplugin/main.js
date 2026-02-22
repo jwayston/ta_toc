@@ -20,7 +20,7 @@ const COLS = 80;
 const INDENT = userPrompt;
 const INDENT_SUB = INDENT + 2;
 
-const lineRegexp = /^(.+)(\[\[.+\]\]|(?<=\s)\w*$)/;
+const lineRegexp = /^(.+)(\[\[.+\]\]|(?<=\s).*$)/;
 const selection = input.text.selected.normalize("NFC");
 
 /* Word wrap snippet
