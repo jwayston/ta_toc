@@ -1,104 +1,54 @@
 /* Table of Contents (TOC) formatter plugin for "The Archive" app
 
-License: CC-BY-4.0
-Author: JW
-
+    License: CC-BY-4.0
+    Author: JW
 */
 
 "use strict";
 
-/* 
-Word wrap snippet
+/* Word wrap snippet
 
-URL: https://github.com/Chalarangelo/30-seconds-of-code/blob/master/content/snippets/js/s/word-wrap.md
-License: CC-BY-4.0
-Credits: Angelos Chalaris
+    URL: https://github.com/Chalarangelo/30-seconds-of-code/blob/master/content/snippets/js/s/word-wrap.md
+    License: CC-BY-4.0
+    Author: Angelos Chalaris
 */
 
 const wordWrap = (str, max, br = '\n') => str.replace(
-	new RegExp(`(?![^\\n]{1,${max}}$)([^\\n]{1,${max}})\\s`, 'g'), `$1${br}`
+    new RegExp(`(?![^\\n]{1,${max}}$)([^\\n]{1,${max}})\\s`, 'g'), `$1${br}`
 );
 
-
-/* Main program logic */
-
-const promptIndent = parseInt(app.prompt({title: "Indent level", defaultValue: 0}));
-
-if (!Number.isInteger(promptIndent))
-	cancel("You didn't provide an indentation level or it wasn't a number");
+/* End of Word wrap snippet */
 
 
-// Settings
-const LINEBR = "\n";
 const COLS = 80;
-const INDENT = promptIndent;
-const INDENT_SUB = INDENT + 2;
+const LINEBR = "\n";
+const prompt = parseInt(app.prompt({title: "Indent", defaultValue: 0}));
+const INDENT = (Number.isInteger(prompt) && prompt >= 0) ? prompt : 0;
+const pad = " ".repeat(INDENT);
 
-const regexLine = /^(.+)(\[\[.+\]\]|(?<=\s).*$)/;
-const selection = input.text.selected.normalize("NFC");
+const tocBuildLine = text => {
+    const regexData = new RegExp(/^(.+)(\[\[.+\]\]|(?<=\s).*$)/);
+    const data = text.match(regexData);
+    if (!data || text.length == 80 ) return text;
 
-// Parse text line
-function parseLine(textLine)
-{
-    let tocLine = "";
-    let particles = textLine.match(regexLine);
+    const [_, , link] = data;
+    const wrapAt = COLS - link.length - INDENT - (INDENT + 2);
 
-    if (!particles)
-        return textLine;
+    // Wrap text and add hanging indent
+    let lines = text.length > COLS ? wordWrap(text, wrapAt).split(LINEBR) : [text];
+    lines = lines.map((l, i) => i ? `  ${pad}${l}` : l);
 
-    const preface = particles[1];
-    const link = particles[2];
-    const indent = " ".repeat(INDENT);
-    const subIndent = " ".repeat(INDENT_SUB)
-    let wrappedText = wordWrap(preface, COLS - INDENT - link.length, LINEBR).split(LINEBR);
+    // Add dots
+    const lastIdx = lines.length - 1;
+    const lastLineData = lines[lastIdx].match(regexData);
+    const dots = ".".repeat(COLS - lines[lastIdx].length - 1);
 
-    tocLine += `${indent}${wrappedText[0]}`;
-    wrappedText.shift();  // Remove first wrapped line, we used it already
-
-    // If there are no other lines, just output the dots and link
-    if (wrappedText.length === 0)
-    {
-        const dotsCount = COLS - tocLine.length - link.length - 1;
-        if (dotsCount < 0)
-            tocLine += `${link}${LINEBR}`;
-        else
-            tocLine += `${".".repeat(dotsCount)} ${link}${LINEBR}`;
-    }
-    // Parse subsequent lines of the word wrapped text
-    else 
-    {
-        // Join the previously wrapped text so that we can rewrap it to achieve hanging indent
-        const joinedText = wrappedText.join(" ");
-        wrappedText = wordWrap(joinedText, COLS - INDENT_SUB - link.length, LINEBR).split(LINEBR);
-
-        tocLine += LINEBR;
-
-        // Process subsequent lines of the wrapped text
-        wrappedText.forEach(function(line, idx, arr) 
-        {
-            // If we are not on the last line, just indent
-            if (idx !== arr.length - 1)
-            {
-                tocLine += `${subIndent}${line}${LINEBR}`;
-                return;
-            } 
-
-            // On the last line, inject the dots
-            const dotsCount = COLS - INDENT_SUB - line.length - link.length - 1;
-            const dots = ".".repeat(dotsCount);
-            tocLine += `${subIndent}${line}${dots} ${link}${LINEBR}`;
-        })
-    }
-
-    return tocLine;
+    lines[lastIdx] = `${lastLineData[1]}${dots} ${lastLineData[2]}`;
+    return lines.join(LINEBR);
 }
 
-let outputText = "";
+const selection = input.text.selected.normalize("NFC");
 
-selection.split(LINEBR).forEach(line =>
-{
-	outputText += parseLine(line);
-})
-
-output.insert.text = outputText;
-
+output.insert.text = selection.split(LINEBR)
+    .map(l => tocBuildLine(`${pad}${l}`))
+    .join("\n");
